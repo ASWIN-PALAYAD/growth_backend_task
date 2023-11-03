@@ -2,10 +2,11 @@ import Data from "../models/Data.js";
 import axios from "axios";
 import * as cheerio from "cheerio"
 
-
-export const calculateWordCount = async (req,res) => {
+//fetch datas and wordcound
+export const fetchAllDatas = async (req,res) => {
     const {url} = req.body; 
     try {
+        
       const response = await axios.get(url);
       const $ = cheerio.load(response.data);
       const text = $('body').text();
@@ -51,6 +52,7 @@ export const calculateWordCount = async (req,res) => {
   }
 
 
+//get all previous searches
   export const viewAllSearches = async(req,res)=>{
     try {
         const data = await Data.find();
@@ -59,6 +61,46 @@ export const calculateWordCount = async (req,res) => {
             message:"fetched all datas",
             data
         })
+    } catch (error) {
+        console.log(error.message);
+    }
+  }
+
+
+//add to favourite
+  export const addFavourite = async(req,res)=> {
+    const {id} = req.body
+    try {
+        const data = await Data.findByIdAndUpdate(id,{
+            isFavourite:true
+        },{new:true,runValidators:true})
+
+        res.json({
+            status:'success',
+            message:"add to favourite",
+            data
+        })
+        
+    } catch (error) {
+        console.log(error.message);
+    }
+  }
+
+
+  //remove from favourite
+  export const removeFavourite = async(req,res)=> {
+    const {id} = req.body
+    try {
+        const data = await Data.findByIdAndUpdate(id,{
+            isFavourite:false
+        },{new:true,runValidators:true})
+
+        res.json({
+            status:'success',
+            message:"removed form favourite",
+            data
+        })
+        
     } catch (error) {
         console.log(error.message);
     }

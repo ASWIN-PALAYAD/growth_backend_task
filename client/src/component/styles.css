@@ -4,15 +4,22 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 
 }
 .main_table{
     padding: 10px;
 }
+.form_section{
+    border: black solid;
+    width: fit-content;
+    padding: 15px;
+}
 .form{
     display: flex;
     flex-direction: column;
     gap: 5px;
+    
 }
 .input_section{
     display: flex;

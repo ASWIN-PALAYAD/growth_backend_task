@@ -11,7 +11,25 @@ const fetchDatas = async()=>{
   const {data} = await axios.get(`${baseUrl}/viewAll`);
   setDatas(data?.data);
 }
-console.log(datas);
+
+
+// //add to favourite
+// const handleAddFavourite = async(id)=> {
+//   const {datas} = await axios.put(`${baseUrl}/addFavourite`,{
+//     id
+//   });
+//   console.log(datas);
+// }
+
+// //remove from favourite
+// const handleRemoveFavourite = async(id)=> {
+//   const {data} = await axios.put(`${baseUrl}/removeFavourite`,{
+//     id
+//   });
+//   setDatas(data)
+// }
+
+
 
 useEffect(()=>{
   fetchDatas();
@@ -34,16 +52,16 @@ useEffect(()=>{
               </tr>
             </thead>
 
-            {datas?.map((data)=>(
+            {datas && datas.map((data)=>(
               <tbody key={data?._id}>
               <tr>
                 <td>{data?.url}</td>
                 <td>{data?.wordCount}</td>
                 <td>
-                  {data?.isFavourit === "true" ? true : "false"}
+                  {data?.isFavourite === true ? "true" : "false"}
                 </td>
                 <td>
-                  {data?.webLinks.map((item) => (
+                  {data?.webLinks?.map((item) => (
                     <>
                       {item?.length > 80 ? <a href={item}>{item.substring(0,80)}</a> : <a href={item}>{item}</a>}
                       {<br />}
@@ -51,7 +69,7 @@ useEffect(()=>{
                   ))}
                 </td>
                 <td>
-                  {data?.mediaLinks.map((item) => ( 
+                  {data?.mediaLinks?.map((item) => ( 
                     <>
                       {item?.length > 50 ? <a href={item}>{item.substring(0,50)}</a> : <a href={item}>{item}</a>}
                       {<br />}

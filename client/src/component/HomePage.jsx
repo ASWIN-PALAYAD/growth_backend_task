@@ -9,7 +9,8 @@ import { Link } from 'react-router-dom';
 const HomePage = () => {
 
   const [url, setUrl] = useState('');
-  const [data, setData] = useState('')
+  const [data, setData] = useState('');
+  const [loading,setLoading]= useState(false);
 
   const handleChange = (e) => {
     setUrl(e.target.value)
@@ -17,26 +18,51 @@ const HomePage = () => {
   //form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const { data } = await axios.post(`${baseUrl}/fetchdata`, {
       url
     })
+
+    if(data){
+      setLoading(false);
+    }
+
     setData(data);
-    console.log(data);
+    console.log(data?.data?._id);
   }
 
-  useEffect(() => {
+  //add to favourite
+  const handleAddFavourite = async(id)=> {
+    const {data} = await axios.put(`${baseUrl}/addFavourite`,{
+      id,isFavourite:true
+    });
+    setData(data)
+  }
 
-  }, [data])
+  //remove from favourite
+  const handleRemoveFavourite = async(id)=> {
+    const {data} = await axios.put(`${baseUrl}/removeFavourite`,{
+      id
+    });
+    setData(data)
+  }
+
+ 
 
   return (
     <div className='main_container'>
-      <form className='form'>
-        <div className='input_section'>
-          <label htmlFor="">Enter your URL</label>
-          <input type="text" value={url} placeholder='Enter your url' onChange={handleChange} />
-        </div>
-        <button className='submit_button' type='submit' onClick={handleSubmit}>Submit</button>
-      </form>
+      <div className='form_section'>
+        <form className='form'>
+          <h1>Webpage Scrapper</h1>
+          <div className='input_section'>
+            <label htmlFor="">Enter Website URL</label>
+            <input type="text" value={url} placeholder='Enter your url' onChange={handleChange} />
+          </div>
+          <button className='submit_button' type='submit' onClick={handleSubmit}>Get insights</button>
+        </form>
+      </div>
+
+      {loading === true &&  <h2>Loading..Please wait</h2>}
 
       {data && (
         <div className='main_table'>
@@ -57,10 +83,10 @@ const HomePage = () => {
                 <td>{data?.data?.url}</td>
                 <td>{data?.data?.wordCount}</td>
                 <td>
-                  {data?.data?.isFavourit === "true" ? true : "false"}
+                  {data?.data?.isFavourite === true? "true" : "false"}
                 </td>
                 <td>
-                  {data?.data?.webLinks.map((item) => (
+                  {data?.data?.webLinks?.map((item) => (
                     <>
                       {item?.length > 80 ? <a href={item}>{item.substring(0,80)}</a> : <a href={item}>{item}</a>}
                       {<br />}
@@ -68,7 +94,7 @@ const HomePage = () => {
                   ))}
                 </td>
                 <td>
-                  {data?.data?.mediaLinks.map((item) => (
+                  {data?.data?.mediaLinks?.map((item) => (
                     <>
                       {item?.length > 50 ? <a href={item}>{item.substring(0,50)}</a> : <a href={item}>{item}</a>}
                       {<br />}
@@ -76,8 +102,8 @@ const HomePage = () => {
                   ))}
                 </td>
                 <td className='button_section'>
-                  <button className='add_favourite'>Add to favourite</button>
-                  <button className='remove_favourite'>Remove</button>
+                  <button className='add_favourite' onClick={()=> handleAddFavourite(data?.data?._id)}>Add to favourite</button>
+                  <button className='remove_favourite' onClick={()=>handleRemoveFavourite(data?.data?._id)}>Remove</button>
                 </td>
               </tr>
             </tbody>

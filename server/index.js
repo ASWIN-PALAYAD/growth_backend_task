@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import cheerio from 'cheerio';
 import dbConnect from "./config/dbConnect.js";
 import cors from 'cors';
-import { calculateWordCount, viewAllSearches } from "./controllers/dataController.js";
+import { addFavourite,fetchAllDatas, removeFavourite, viewAllSearches } from "./controllers/dataController.js";
 
 
 dbConnect()
@@ -13,8 +13,10 @@ app.use(bodyParser.json());
 app.use(cors());
 
 
-app.post('/api/fetchData',calculateWordCount);
-app.get('/api/viewAll',viewAllSearches)
+app.post('/api/fetchData',fetchAllDatas);
+app.get('/api/viewAll',viewAllSearches);
+app.put('/api/addFavourite',addFavourite);
+app.put('/api/removeFavourite',removeFavourite)
 
 
 const port = process.env.PORT || 3000
