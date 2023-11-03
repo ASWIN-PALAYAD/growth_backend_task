@@ -45,7 +45,21 @@ export const calculateWordCount = async (req,res) => {
       })
   
     } catch (error) {
-      console.error('Error calculating word count:', error);
+      console.error(error.message); 
       
+    }
+  }
+
+
+  export const viewAllSearches = async(req,res)=>{
+    try {
+        const data = await Data.find();
+        res.json({
+            status:"success",
+            message:"fetched all datas",
+            data
+        })
+    } catch (error) {
+        console.log(error.message);
     }
   }

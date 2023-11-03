@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import cheerio from 'cheerio';
 import dbConnect from "./config/dbConnect.js";
 import cors from 'cors';
-import { calculateWordCount } from "./controllers/dataController.js";
+import { calculateWordCount, viewAllSearches } from "./controllers/dataController.js";
 
 
 dbConnect()
@@ -13,7 +13,8 @@ app.use(bodyParser.json());
 app.use(cors());
 
 
-app.get('/api/fetchData',calculateWordCount)
+app.post('/api/fetchData',calculateWordCount);
+app.get('/api/viewAll',viewAllSearches)
 
 
 const port = process.env.PORT || 3000
