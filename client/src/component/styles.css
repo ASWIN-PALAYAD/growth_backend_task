@@ -76,12 +76,17 @@ table {
     color: white;
  }
 
+ .delete_button{
+  background-color: red;
+    margin-bottom: 5px;
+    margin-top: 5px;
+ }
   .add_favourite{
     background-color: green;
     margin-bottom: 5px;
     margin-top: 5px;
   }
   .remove_favourite{
-    background-color: red;
+    background-color: orange;
   }
   

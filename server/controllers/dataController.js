@@ -5,6 +5,7 @@ import * as cheerio from "cheerio"
 //fetch datas and wordcound
 export const fetchAllDatas = async (req,res) => {
     const {url} = req.body; 
+    
     try {
         
       const response = await axios.get(url);
@@ -103,5 +104,20 @@ export const fetchAllDatas = async (req,res) => {
         
     } catch (error) {
         console.log(error.message);
+    }
+  }
+
+  //delete
+  export const deleteSingleItem = async(req,res)=>{
+    const {id} = req.body
+    console.log(id);
+    try {
+      const data = await Data.findOneAndDelete(id);
+      res.json({
+        message:"deleted"
+      })
+      
+    } catch (error) {
+      console.log(error.message);
     }
   }

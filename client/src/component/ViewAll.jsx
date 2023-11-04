@@ -13,21 +13,11 @@ const fetchDatas = async()=>{
 }
 
 
-// //add to favourite
-// const handleAddFavourite = async(id)=> {
-//   const {datas} = await axios.put(`${baseUrl}/addFavourite`,{
-//     id
-//   });
-//   console.log(datas);
-// }
-
-// //remove from favourite
-// const handleRemoveFavourite = async(id)=> {
-//   const {data} = await axios.put(`${baseUrl}/removeFavourite`,{
-//     id
-//   });
-//   setDatas(data)
-// }
+//delete
+const handleDelete = async(id)=>{
+  await axios.delete(`${baseUrl}/delete`, {id});
+  window.location.reload();
+}
 
 
 
@@ -79,6 +69,7 @@ useEffect(()=>{
                 <td className='button_section'>
                   <button className='add_favourite'>Add to favourite</button>
                   <button className='remove_favourite'>Remove</button>
+                  <button className='delete_button' onClick={()=>handleDelete(data?._id)}>Delete</button>
                 </td>
               </tr>
             </tbody>
